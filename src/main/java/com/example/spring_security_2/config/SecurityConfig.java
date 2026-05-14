@@ -21,7 +21,9 @@ public class SecurityConfig {
     public AuthenticationProvider authenticationProvider() {
 
         DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider(customUserDetailsService());
+                new DaoAuthenticationProvider();
+
+        provider.setUserDetailsService(customUserDetailsService());
 
         provider.setPasswordEncoder(passwordEncoder());
 
@@ -42,6 +44,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/register").permitAll()
+                        .requestMatchers("/").permitAll()
 
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
