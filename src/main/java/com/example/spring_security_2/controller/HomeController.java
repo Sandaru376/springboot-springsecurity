@@ -14,6 +14,11 @@ public class HomeController {
     @Autowired
     private AuthService authService;
 
+    @PostMapping("/login")
+    public String login(@RequestBody User user){
+        return authService.verify(user);
+    }
+
     @GetMapping("/")
     public String home() {
         return "public Home";
