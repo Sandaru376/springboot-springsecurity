@@ -1,4 +1,5 @@
 package com.example.spring_security_2.config;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import com.example.spring_security_2.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -11,9 +12,13 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public CustomUserDetailsService customUserDetailsService() {
@@ -56,8 +61,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 // ❌ Remove this → .formLogin(form -> form.permitAll())
                 .httpBasic(Customizer.withDefaults());
+
+
 
         return http.build();
     }

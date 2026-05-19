@@ -26,8 +26,10 @@ public class HomeController {
 
     @GetMapping("/admin/dashboard")
     public String dashboard() {
+        System.out.println("Admin dashboard accessed!");
         return "admin Dashboard";
     }
+
 
     @GetMapping("/user/profile")
     public String profile() {
